@@ -1,7 +1,9 @@
-const BASE = "https://yunora-enterprise-system-1.onrender.com";
+// In development: Vite proxies /api/yunora → localhost:8080 (our API server proxy)
+// In production (Firebase): calls go directly to the Yunora backend with auth handled server-side
+const PROXY_BASE = "/api/yunora";
 
 async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`${BASE}${path}`, {
+  const res = await fetch(`${PROXY_BASE}${path}`, {
     headers: { Accept: "application/json" },
   });
   if (!res.ok) throw new Error(`API error ${res.status}: ${path}`);
@@ -9,7 +11,7 @@ async function get<T>(path: string): Promise<T> {
 }
 
 async function post<T>(path: string, body: unknown): Promise<T> {
-  const res = await fetch(`${BASE}${path}`, {
+  const res = await fetch(`${PROXY_BASE}${path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify(body),
